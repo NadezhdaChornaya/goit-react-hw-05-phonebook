@@ -1,0 +1,7 @@
+/* .TitleSlide-appear {
+	transform: translateY(-100%);
+}
+.TitleSlide-appear-active {
+	transform: translateY(0);
+	transition: transform 5000ms linear;
+} */

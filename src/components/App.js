@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { v4 as uuidv4 } from 'uuid';
 import ContactForm from './contactForm/ContactForm';
 import { ContactList } from './contactList/ContactList';
 import { Filter } from './filter/Filter';
-import { PhonebookWrapper } from './styledApp'
+import { PhonebookWrapper } from './styledApp';
+
+
 
 
 
@@ -17,8 +20,10 @@ const App = () => {
             { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
         ],
         filter: '',
-
     });
+
+    const [alert, setAlert] = useState({ showAlert: false, })
+    const [text, setAlertText] = useState('')
 
     useEffect(() => {
         localStorage.setItem('contacts', JSON.stringify(state.contacts))
@@ -33,6 +38,13 @@ const App = () => {
             )
         }
     }, [])
+
+    const getVisibleAlert = (text) => {
+        setAlertText(text)
+        setAlert({ showAlert: true, });
+        setTimeout(() => { setAlert({ showAlert: false, }) }, 5000)
+        setTimeout(() => { (setAlertText('')) }, 5500)
+    }
 
     const handleChangeFilter = (e) => {
         setState(prevState => ({ ...prevState, filter: e.target.value }));
@@ -54,17 +66,19 @@ const App = () => {
             name: contactsObj.name,
             number: contactsObj.number,
         }
-        console.log(contactsObj)
         if (!contactsObj.name.length) {
-            alert('Please, enter your name')
+
+            getVisibleAlert('Please, enter your name')
         }
         else if (!contactsObj.number.length) {
-            alert('Please, enter your number')
+
+            getVisibleAlert('Please, enter your number')
         }
         else {
             if (state.contacts.some((contact) =>
                 contact.name.toLowerCase() === contactsObj.name.toLowerCase())) {
-                alert(`${contactsObj.name} is already in contacts.`)
+
+                getVisibleAlert(`${contactsObj.name} is already in contacts.`)
             }
             else {
                 setState(prev => ({
@@ -84,18 +98,39 @@ const App = () => {
         )
     }
     return (
-        <PhonebookWrapper>
 
-            <h1 className="mainTitle">Phonebook</h1>
+        <PhonebookWrapper>
+            <CSSTransition
+                in={true}
+                appear={true}
+                classNames="titleSlide"
+                timeout={500}
+                unmountOnExit
+            >
+                <h1 className="mainTitle">Phonebook</h1>
+            </CSSTransition>
             <ContactForm addContact={addContact} />
             <h2 className="title">Contacts</h2>
             {state.contacts.length > 1 && (
                 <Filter value={state.filter} onChangeFilter={handleChangeFilter} />
             )}
-            {state.contacts.length > 0 && (
+            {state.contacts.length > 0 && (<CSSTransition
+                in={true}
+                appear={true}
+                classNames="titleSlide"
+                timeout={500}
+                unmountOnExit>
                 <ContactList contacts={getVisibleContacts()} deleteContact={deleteContact} />
-            )}
+            </CSSTransition>)}
+            <CSSTransition
+                in={alert.showAlert}
+                classNames="alertSlide"
+                timeout={250}
+                unmountOnExit>
+                {/* <Notification text={alert.showAlert} /> */}
+            </CSSTransition>
         </PhonebookWrapper>
+
     )
 }
 

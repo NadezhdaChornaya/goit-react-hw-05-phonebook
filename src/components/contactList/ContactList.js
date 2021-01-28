@@ -1,22 +1,46 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { UlContactList } from './styledList';
+import { TransitionGroup } from 'react-transition-group';
+import { Div } from './styledList';
+import transition from 'styled-transition-group';
 
+const LI = transition.li.attrs({
+    mountOnEnter: true,
+    unmountOnExit: true,
+    timeout: 250,
+})`
+&:enter{transform: translateX(-200%);}
+&:enter-active{
+    transform: translateX(0);
+	transition: all 250ms linear;
+}
+&:exit{transform: transform: translateX(0);}
+&:exit-active{
+    transform: translateX(200%);
+	transition: all 250ms linear;
+}
+`
 
 export const ContactList = ({ contacts, deleteContact }) => {
     return (
-        <UlContactList className="wrapper">
-            {contacts.map(({ id, name, number }) => {
-                return (
-                    <li key={id} className="itemContact">
-                        {`${name}:  ${number}`}
-                        <button className="button" type="button" data-id={id} onClick={deleteContact}>Delete</button>
-                    </li>
+        <Div>
+            <TransitionGroup component="ul" className="contactList wrapper">
+                {contacts.map(({ id, name, number }) => {
+                    return (
+                        // <CSSTransition
+                        //     key={id}
+                        //     timeout={250}
+                        //     classNames="contactItemFade">
+                        <LI key={id} timeout={250} className="itemContact">
+                            {`${name}:  ${number}`}
+                            <button className="button" type="button" data-id={id} onClick={deleteContact}>Delete</button>
+                        </LI>
+                        // </CSSTransition>
+                    )
+                })}
 
-                )
-            })}
-
-        </UlContactList >
+            </TransitionGroup >
+        </Div>
     )
 }
 

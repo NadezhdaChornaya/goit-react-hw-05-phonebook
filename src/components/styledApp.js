@@ -17,4 +17,27 @@ text-shadow: 1px 1px 2px #2F4F4F, 0 0 1em #808080;
     
     font-size: 30px;   
 }
+
+.titleSlide-appear{
+    transform: translateY(-100%);
+}
+.titleSlide-appear-active{
+    transform: translateY(0);
+    transition:transform 500ms linear;
+}
+
+.alertSlide-enter{
+transform: translateX(200%);
+}
+.alertSlide-enter-active{
+    transform: translateX(0);
+	transition: all 250ms linear;
+}
+.alertSlide-exit{
+    transform: translateX(0);
+}
+.alertSlide-active{
+    transform: translateX(200%);
+	transition: all 250ms linear;
+}
 `
