@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import { FilterWrapper } from './styledFilter'
 
 export const Filter = ({ value, onChangeFilter }) => {
-    // const onHandleChangeFilter = e => {
-    //     onChangeFilter(e.target.value)
-    // }
     return (
 
         <FilterWrapper className="wrapper">
